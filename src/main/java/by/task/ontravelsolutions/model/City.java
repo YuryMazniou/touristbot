@@ -18,12 +18,8 @@ public class City {
     public City() {
     }
 
-    public City(Integer id){
-        this(id, null, null);
-    }
-
     public City(String city, String info){
-        this(0, city, info);
+        this(null, city, info);
     }
 
     public City(Integer id, String city, String info) {
