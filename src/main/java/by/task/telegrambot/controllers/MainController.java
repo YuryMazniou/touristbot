@@ -5,6 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -17,6 +18,7 @@ import static by.task.telegrambot.util.ValidationUtil.checkNotFoundWithId;
 
 @RestController
 @RequestMapping(value = MainController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
+@Transactional(readOnly = true)
 public class MainController {
     private static Logger log = LoggerFactory.getLogger(MainController.class);
 
@@ -35,6 +37,7 @@ public class MainController {
     }
 
     @PostMapping
+    @Transactional
     public ResponseEntity<City> create(@RequestBody City city) {
         log.info("create city");
         Assert.notNull(city, "meal must not be null");
@@ -52,6 +55,7 @@ public class MainController {
     }
 
     @PutMapping("/{id}")
+    @Transactional
     public void update(@RequestBody City newCity, @PathVariable Long id) {
         log.info("update city by id={}",id);
         City city= checkNotFound(cityRepository.findById(id).orElse(null),"Нет такого id="+id+" в базе данных");
@@ -60,6 +64,7 @@ public class MainController {
     }
 
     @DeleteMapping("/{id}")
+    @Transactional
     public void delete(@PathVariable Long id) {
         log.info("delete city by id={}",id);
         checkNotFoundWithId(cityRepository.delete(id)!=0,id);
