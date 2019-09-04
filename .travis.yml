@@ -9,6 +9,10 @@ before_script:
   - psql -c 'create database telegrambot' -U postgres
   - psql -c 'create user "user"; grant all privileges on database telegrambot to "user"' -U postgres
 
+install:
+  - mvn -N io.takari:maven:wrapper
+  - ./mvnw install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
+
 services:
   - postgresql
 
