@@ -1,4 +1,4 @@
-package by.task.ontravelsolutions.model;
+package by.task.telegrambot.model;
 
 import javax.persistence.*;
 import java.util.Objects;
@@ -9,7 +9,7 @@ public class City {
     @Id
     @SequenceGenerator(name = "global_seq", sequenceName = "global_seq", allocationSize = 1, initialValue = 100000)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "global_seq")
-    private Integer id;
+    private long id;
     @Column(name = "city", unique = true, length = 80, nullable = false)
     private String city;
     @Column(name = "info", nullable = false)
@@ -19,10 +19,10 @@ public class City {
     }
 
     public City(String city, String info){
-        this(null, city, info);
+        this(0L, city, info);
     }
 
-    public City(Integer id, String city, String info) {
+    public City(long id, String city, String info) {
         this.id = id;
         this.city = city;
         this.info = info;
