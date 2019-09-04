@@ -5,9 +5,14 @@ cache:
   directories:
     - $HOME/.m2
 
+before_script:
+  - psql -c 'create database telegrambot' -U postgres
+  - psql -c 'create user "user"; grant all privileges on database telegrambot to "user"' -U postgres
+
+services:
+  - postgresql
+
 branches:
   only:
     - master
 
-notifications:
-  email: true
