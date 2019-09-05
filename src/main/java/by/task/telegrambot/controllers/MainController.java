@@ -3,6 +3,7 @@ import by.task.telegrambot.model.City;
 import by.task.telegrambot.repository.CityRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,7 +19,6 @@ import static by.task.telegrambot.util.ValidationUtil.checkNotFoundWithId;
 
 @RestController
 @RequestMapping(value = MainController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
-@Transactional(readOnly = true)
 public class MainController {
     private static Logger log = LoggerFactory.getLogger(MainController.class);
 
@@ -36,7 +36,7 @@ public class MainController {
         return cityRepository.findAll();
     }
 
-    @PostMapping
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @Transactional
     public ResponseEntity<City> create(@RequestBody City city) {
         log.info("create city");
@@ -54,7 +54,8 @@ public class MainController {
         return checkNotFound(cityRepository.findById(id).orElse(null),"Нет такого id="+id+" в базе данных");
     }
 
-    @PutMapping("/{id}")
+    @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(value = HttpStatus.NO_CONTENT)
     @Transactional
     public void update(@RequestBody City newCity, @PathVariable Long id) {
         log.info("update city by id={}",id);
@@ -65,6 +66,7 @@ public class MainController {
 
     @DeleteMapping("/{id}")
     @Transactional
+    @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void delete(@PathVariable Long id) {
         log.info("delete city by id={}",id);
         checkNotFoundWithId(cityRepository.delete(id)!=0,id);

@@ -11,6 +11,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class CityData {
     public static final City CITY1=new City(100000,"Москва","Не забудьте посетить Красную Площадь. Ну а в ЦУМ можно и не заходить)))");
     public static final City CITY2=new City(100001,"Минск","Зайдите на Зыбу,там весело)))");
+    public static final City CITY_UPDATE=new City(100000,"моск","не куда не ходите");
 
     public static ResultMatcher contentJson(City ... expected) {
         return result -> assertMatch(readListFromJsonMvcResult(result, City.class), List.of(expected));
@@ -18,5 +19,9 @@ public class CityData {
 
     public static <T> void assertMatch(Iterable<T> actual, Iterable<T> expected) {
         assertThat(actual).usingFieldByFieldElementComparator().isEqualTo(expected);
+    }
+
+    public static void assertMatch(City actual, City expected) {
+        assertThat(actual).isEqualToComparingFieldByField(expected);
     }
 }
